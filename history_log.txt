@@ -1,7 +1,7 @@
-commit 29c7c6c6872e9895732c0015d8a9bbaa7418edd7
+commit 5f639a334f081f047b8a69b4909aa15a12daab3b
 Author: Grammeri <reacttsxgrammer@gmail.com>
-Date:   Thu Feb 2 21:53:14 2023 +0000
+Date:   Fri Feb 3 02:44:21 2023 +0000
 
-    Fake commitment
+    Fist proper commitment. Registration first version
 
- 3 files changed, 37 insertions(+), 239 deletions(-)
+ 5 files changed, 76 insertions(+), 48 deletions(-)

@@ -1,5 +1,5 @@
 import Controller.SocialMediaController;
-import io.javalin.Javalin;
+import io.javalin.Javalin; 
 
 /**
  * This class is provided with a main method to allow you to manually run and test your application. This class will not
