@@ -19,6 +19,10 @@ import io.javalin.http.Context;
 public class SocialMediaController {
     AccountService accountService;
 
+    public SocialMediaController(){
+        this.accountService = new AccountService();
+    }
+
     /**
      * In order for the test cases to work, you will need to write the endpoints in
      * the startAPI() method, as the test
@@ -27,11 +31,12 @@ public class SocialMediaController {
      * @return a Javalin app object which defines the behavior of the Javalin
      *         controller.
      */
-    public Javalin startAPI() {
+    
+     public Javalin startAPI() {
         Javalin app = Javalin.create();
-       /*  app.post("/register", this::newUserRegistrationHandler);
+       app.post("/register", this::newUserRegistrationHandler);
         app.post("/login", this::userLoginHandler);
-        app.post("/messages", this::newMessageCreationHandler);
+        /*app.post("/messages", this::newMessageCreationHandler);
         app.get("/messages", this::retrievAllMessagesHandler);
         app.get("/messages/{message_id}", this::retrievMessageByIdHandler);
         app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
