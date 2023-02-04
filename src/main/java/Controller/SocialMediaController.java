@@ -1,11 +1,15 @@
 package Controller;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
+import Model.Message;
 import Service.AccountService;
+import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -18,9 +22,11 @@ import io.javalin.http.Context;
  */
 public class SocialMediaController {
     AccountService accountService;
+    MessageService messageService;
 
     public SocialMediaController() {
         this.accountService = new AccountService();
+        this.messageService = new MessageService();
     }
 
     /**
@@ -36,8 +42,9 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.post("/register", this::newUserRegistrationHandler);
         app.post("/login", this::userLoginHandler);
+        app.get("/accounts", this::getAllUsersHandler);
+        app.post("/messages", this::newMessageCreationHandler);
         /*
-         * app.post("/messages", this::newMessageCreationHandler);
          * app.get("/messages", this::retrievAllMessagesHandler);
          * app.get("/messages/{message_id}", this::retrievMessageByIdHandler);
          * app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
@@ -87,23 +94,20 @@ public class SocialMediaController {
 
         ctx.json(mapper.writeValueAsString(foundAccount));
     }
-   /*  private void getAllUsersHandler(Context ctx) throws JsonMappingException, JsonProcessingException {
+
+    private void getAllUsersHandler(Context ctx) {
+        List<Account> accounts = accountService.getAllUsers();
+        ctx.json(accounts);
+    }
+
+    private void newMessageCreationHandler(Context ctx) throws JsonMappingException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Account loginData = mapper.readValue(ctx.body(), Account.class);
-
-        if (loginData.password.length() == 0 || loginData.username.length() == 0) {
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        Message addedMessage = messageService.addMessage(message);
+        if (addedMessage != null) {
+            ctx.json(mapper.writeValueAsString(addedMessage));
+        } else {
             ctx.status(400);
-            return;
         }
-
-        Account foundAccount = accountService.getAllAccounts();
-
-        if (foundAccount == null) {
-            ctx.status(401);
-            return;
-        }
-
-        ctx.json(mapper.writeValueAsString(foundAccount));
-    }*/
-
+    }
 }

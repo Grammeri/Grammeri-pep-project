@@ -1,10 +1,9 @@
 package Service;
 
+import java.util.List;
+
 import DAO.AccountDAO;
 import Model.Account;
-import io.javalin.http.Context;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AccountService {
     private AccountDAO accountDAO;
@@ -22,7 +21,7 @@ public class AccountService {
 
     public Account addAccount(Account account) {
         // Account account_id = this.accountDAO.getAccountById(account.account_id);
-        if (account.username.length() == 0 || account.password.length() < 4){
+        if (account.username.length() == 0 || account.password.length() < 4) {
             return null;
         }
         return accountDAO.createAccount(account);
@@ -32,5 +31,8 @@ public class AccountService {
         return accountDAO.getAccountByUsernameAndPassword(username, password);
     }
 
-    
+    public List<Account> getAllUsers() {
+        return accountDAO.getAllAccounts();
+    }
+
 }
