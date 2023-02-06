@@ -50,6 +50,7 @@ public class SocialMediaController {
         app.get("/messages", this::retrieveAllMessagesHandler);
         // app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
         app.get("/messages/{message_id}", this::retrieveMessageByIdHandler);
+        app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
         /*
          * app.get("/messages/{message_id}", this::retrieveMessageByIdHandler);
          * app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
@@ -136,53 +137,30 @@ public class SocialMediaController {
     // Retrieve a message by id (5) - version 1
 
     private void retrieveMessageByIdHandler(Context ctx) {
-        //path params are of type String by default, so we convert it to int
-        ctx.json(messageService.getMessageById(Integer.parseInt(ctx.pathParam("message_id"))));
+        // path params are of type String by default, so we convert it to int
+        Message retrievedMessage = messageService.getMessageById(Integer.parseInt(ctx.pathParam("message_id")));
+        if(retrievedMessage == null){
+            ctx.status(200);
+            return;
+        }
+        ctx.json(retrievedMessage);
     }
 
-    // Retrieve a message by id (5) - version 2
-    /*
-     * private void retrieveMessageByIdHandler(Context ctx) throws
-     * JsonProcessingException {
-     * ObjectMapper mapper = new ObjectMapper();
-     * Message messageById = mapper.readValue(ctx.body(), Message.class);
-     * 
-     * if (loginData.password.length() == 0 || loginData.username.length() == 0) {
-     * ctx.status(400);
-     * return;
-     * }
-     * 
-     * Account foundMessageById =
-     * messageService.getMessageById(messageById.message_text);
-     * 
-     * if (messageById == null) {
-     * ctx.status(401);
-     * return;
-     * }
-     * 
-     * ctx.json(mapper.writeValueAsString(messageById));
-     * }
-     */
-
     // Delete message by id
+
+    private void deleteMessageByIdHandler(Context ctx) {
+        Message deletedMessage = messageService.deleteMessageById(Integer.parseInt(ctx.pathParam("message_id")));
+        if(deletedMessage == null) {
+            ctx.status(200);
+            return;
+        }
+        ctx.json(deletedMessage);
+    }
+
+    // update message by id
+
     /*
-     * private void deleteMessageByIdHandler(Context ctx) throws
-     * JsonProcessingException {
-     * ObjectMapper mapper = new ObjectMapper();
-     * Account loginData = mapper.readValue(ctx.body(), Account.class);
-     * 
-     * Account foundMessage = messageService.deleteMessageById(loginData.username,
-     * loginData.password);
-     * 
-     * if (foundMessage == null) {
-     * ctx.status(200);
-     * return;
-     * }
-     * 
-     * 
-     * //update message by id
-     * 
-     * /*private void updateMessageByIdHandler(Context ctx) throws
+     * private void updateMessageByIdHandler(Context ctx) throws
      * JsonProcessingException {
      * ObjectMapper mapper = new ObjectMapper();
      * Message message = mapper.readValue(ctx.body(), Message.class);
@@ -195,7 +173,6 @@ public class SocialMediaController {
      * ctx.json(mapper.writeValueAsString(updatedMessage));
      * }
      * 
-     * }
      */
 
 }
