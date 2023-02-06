@@ -36,12 +36,20 @@ public class MessageService {
 
     // retrieve message by id - version 1
     public Message getMessageById(int message_id) {
-      return messageDAO.getMessageById(message_id);
+        return messageDAO.getMessageById(message_id);
     }
 
     public Message deleteMessageById(int message_id) {
         return messageDAO.deleteMessageById(message_id);
-      }
+    }
+
+    public Message updateMessage(int message_id, Message message) {
+        if (message.message_text.length() == 0 || message.message_text.length() > 255) {
+            return null;
+        }
+        messageDAO.updateMessage(message_id, message);
+        return this.messageDAO.getMessageById(message_id);
+    }
 }
 // if(messageFromDb == null) return null;
 
@@ -53,10 +61,6 @@ public class MessageService {
 // public Message getMessageById(int message_id) {
 // return accountDAO.getAccountByUsernameAndPassword(username, password);
 // }
-
-// public Message updateMessage(int message_id, Message message){
-// Message messageFromDb = this.messageDAO.getMessageById(message_id);
-// if (messageFromDb == null) return null;
 
 // messageDAO.updateMessage(message_id, message);
 // return this.messageDAO.getMessageById(message_id);

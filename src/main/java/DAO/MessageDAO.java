@@ -131,19 +131,19 @@ public class MessageDAO {
     // Update message by text identified by a message id - (7)
     public void updateMessage(int message_id, Message message) {
         Connection connection = ConnectionUtil.getConnection();
-        try {
 
-            String sql = "update message set posted_by=?, message_text=?, time_posted_epoch where flight_id=?;";
+        try {
+            String sql = "update message set message_text=? where message_id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, message.posted_by);
-            preparedStatement.setString(2, message.message_text);
-            preparedStatement.setLong(3, message_id);
+            preparedStatement.setString(1, message.message_text);
+            preparedStatement.setInt(2, message_id);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    
     }
 }
 

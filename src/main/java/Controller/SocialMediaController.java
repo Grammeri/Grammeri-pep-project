@@ -48,16 +48,10 @@ public class SocialMediaController {
         // app.get("/accounts", this::getAllUsersHandler);
         app.post("/messages", this::newMessageCreationHandler);
         app.get("/messages", this::retrieveAllMessagesHandler);
-        // app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
+        app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
         app.get("/messages/{message_id}", this::retrieveMessageByIdHandler);
         app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
-        /*
-         * app.get("/messages/{message_id}", this::retrieveMessageByIdHandler);
-         * app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
-         * app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
-         * app.get("/accounts/{account_id}/messages",
-         * this::retrieveAllMessagesByParticularUserHandler);
-         */
+        app.get("/accounts/{account_id}/messages", this::retrieveAllMessagesByParticularUserHandler);
 
         return app;
     }
@@ -139,7 +133,7 @@ public class SocialMediaController {
     private void retrieveMessageByIdHandler(Context ctx) {
         // path params are of type String by default, so we convert it to int
         Message retrievedMessage = messageService.getMessageById(Integer.parseInt(ctx.pathParam("message_id")));
-        if(retrievedMessage == null){
+        if (retrievedMessage == null) {
             ctx.status(200);
             return;
         }
@@ -150,7 +144,7 @@ public class SocialMediaController {
 
     private void deleteMessageByIdHandler(Context ctx) {
         Message deletedMessage = messageService.deleteMessageById(Integer.parseInt(ctx.pathParam("message_id")));
-        if(deletedMessage == null) {
+        if (deletedMessage == null) {
             ctx.status(200);
             return;
         }
@@ -159,20 +153,22 @@ public class SocialMediaController {
 
     // update message by id
 
-    /*
-     * private void updateMessageByIdHandler(Context ctx) throws
-     * JsonProcessingException {
-     * ObjectMapper mapper = new ObjectMapper();
-     * Message message = mapper.readValue(ctx.body(), Message.class);
-     * int message_id = Integer.parseInt(ctx.pathParam("message_id"));
-     * Message updatedMessage = messageService.updateMessage(message_id, message);
-     * System.out.println(updatedMessage);
-     * if(updatedMessage == null){
-     * ctx.status(400);
-     * }else{
-     * ctx.json(mapper.writeValueAsString(updatedMessage));
-     * }
-     * 
-     */
+    private void updateMessageByIdHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+
+        Message updatedMessage = messageService.updateMessage(message_id, message);
+        if (updatedMessage == null) {
+            ctx.status(400);
+        } else {
+            ctx.json(mapper.writeValueAsString(updatedMessage));
+        }
+    }
+
+    private void retrieveAllMessagesByParticularUserHandler(Context ctx) {
+        int account_id = Integer.parseInt(ctx.pathParam("account_id"));
+        List<Message> messagesByUser=messageService.getAllMessagesByUser(Integer.parseInt(ctx.pathParam(account_id));
+    }
 
 }
