@@ -168,7 +168,9 @@ public class SocialMediaController {
 
     private void retrieveAllMessagesByParticularUserHandler(Context ctx) {
         int account_id = Integer.parseInt(ctx.pathParam("account_id"));
-        List<Message> messagesByUser=messageService.getAllMessagesByUser(Integer.parseInt(ctx.pathParam(account_id));
-    }
 
+        List<Message> messages = messageService.getAllMessagesByUser(account_id);
+
+        ctx.json(messages);
+    }
 }

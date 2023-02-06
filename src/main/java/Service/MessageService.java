@@ -50,6 +50,10 @@ public class MessageService {
         messageDAO.updateMessage(message_id, message);
         return this.messageDAO.getMessageById(message_id);
     }
+    
+    public List<Message> getAllMessagesByUser(int account_id) {
+        return this.messageDAO.getAllMessagesByAccountId(account_id);
+    }
 }
 // if(messageFromDb == null) return null;
 
