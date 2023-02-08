@@ -1,28 +1,17 @@
 package Controller;
 
 import java.util.List;
-
-//import java.util.List;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
 import Model.Message;
-// import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-/**
- * TODO: You will need to write your own endpoints and handlers for your
- * controller. The endpoints you will need can be
- * found in readme.md as well as the test cases. You should
- * refer to prior mini-project labs and lecture materials for guidance on how a
- * controller may be built.
- */
 public class SocialMediaController {
     AccountService accountService;
     MessageService messageService;
@@ -32,20 +21,10 @@ public class SocialMediaController {
         this.messageService = new MessageService();
     }
 
-    /**
-     * In order for the test cases to work, you will need to write the endpoints in
-     * the startAPI() method, as the test
-     * suite must receive a Javalin object from this method.
-     * 
-     * @return a Javalin app object which defines the behavior of the Javalin
-     *         controller.
-     */
-
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.post("/register", this::newUserRegistrationHandler);
         app.post("/login", this::userLoginHandler);
-        // app.get("/accounts", this::getAllUsersHandler);
         app.post("/messages", this::newMessageCreationHandler);
         app.get("/messages", this::retrieveAllMessagesHandler);
         app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
@@ -56,16 +35,7 @@ public class SocialMediaController {
         return app;
     }
 
-    /**
-     * This is an example handler for an example endpoint.
-     * 
-     * @param context The Javalin Context object manages information about both the
-     *                HTTP request and response.
-     * @throws JsonProcessingException
-     * @throws JsonMappingException
-     */
-
-    // registration (1)
+    // Task 1, User Registration.
     private void newUserRegistrationHandler(Context ctx) throws JsonMappingException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
@@ -78,17 +48,10 @@ public class SocialMediaController {
 
     }
 
-    // login (2)
+    // Task 2 User login
     private void userLoginHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account loginData = mapper.readValue(ctx.body(), Account.class);
-
-        /*
-         * if (loginData.password.length() == 0 || loginData.username.length() == 0) {
-         * ctx.status(400);
-         * return;
-         * }
-         */
 
         Account foundAccount = accountService.getUserAccount(loginData.username, loginData.password);
 
@@ -100,16 +63,7 @@ public class SocialMediaController {
         ctx.json(mapper.writeValueAsString(foundAccount));
     }
 
-    // get all users
-    /*
-     * private void getAllUsersHandler(Context ctx) {
-     * List<Account> accounts = accountService.getAllUsers();
-     * ctx.json(accounts);
-     * }
-     */
-
-    // Create new message (3)
-
+    // Task 3 New message creation
     private void newMessageCreationHandler(Context ctx) throws JsonMappingException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
@@ -121,15 +75,13 @@ public class SocialMediaController {
         }
     }
 
-    // Retrieve all messages (4)
-
+    // Task 4 Getting all messages
     public void retrieveAllMessagesHandler(Context ctx) {
         List<Message> messages = messageService.getAllMessages();
         ctx.json(messages);
     }
 
-    // Retrieve a message by id (5) - version 1
-
+    // Task 5 Getting a message by its ID
     private void retrieveMessageByIdHandler(Context ctx) {
         // path params are of type String by default, so we convert it to int
         Message retrievedMessage = messageService.getMessageById(Integer.parseInt(ctx.pathParam("message_id")));
@@ -140,8 +92,7 @@ public class SocialMediaController {
         ctx.json(retrievedMessage);
     }
 
-    // Delete message by id
-
+    // Task 6 Deleting a message by its ID
     private void deleteMessageByIdHandler(Context ctx) {
         Message deletedMessage = messageService.deleteMessageById(Integer.parseInt(ctx.pathParam("message_id")));
         if (deletedMessage == null) {
@@ -151,8 +102,7 @@ public class SocialMediaController {
         ctx.json(deletedMessage);
     }
 
-    // update message by id
-
+    // Task 7 Updating a message by its ID
     private void updateMessageByIdHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
@@ -166,6 +116,7 @@ public class SocialMediaController {
         }
     }
 
+    // Task 8 Getting messages written by a particular user
     private void retrieveAllMessagesByParticularUserHandler(Context ctx) {
         int account_id = Integer.parseInt(ctx.pathParam("account_id"));
 

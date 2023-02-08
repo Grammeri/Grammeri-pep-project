@@ -13,8 +13,7 @@ import Util.ConnectionUtil;
 
 public class MessageDAO {
 
-    // Create message (3)
-
+    // Task 3 New message creation
     public Message createMessage(Message message) {
 
         Connection connection = ConnectionUtil.getConnection();
@@ -41,7 +40,7 @@ public class MessageDAO {
         return null;
     }
 
-    // Retrieve all messages (4)
+    // Task 4 Getting all messages
     public List<Message> getAllMessages() {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -62,8 +61,7 @@ public class MessageDAO {
         return messages;
     }
 
-    // Retrieve a message by it's id - (5)
-
+    // Task 5 Getting a message by its ID
     public Message getMessageById(int message_id) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -86,6 +84,7 @@ public class MessageDAO {
         return null;
     }
 
+    // Task 6 Deleting a message by its ID
     public Message deleteMessageById(int message_id) {
         Connection connection = ConnectionUtil.getConnection();
         Message messageToDelete = null;
@@ -126,9 +125,7 @@ public class MessageDAO {
         return null;
     }
 
-    // Delete message by a message ID - (6)
-
-    // Update message by text identified by a message id - (7)
+    // Task 7 Updating a message by its ID
     public void updateMessage(int message_id, Message message) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -146,6 +143,7 @@ public class MessageDAO {
 
     }
 
+    // Task 8 Getting messages written by a particular user
     public List<Message> getAllMessagesByAccountId(int account_id) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -171,30 +169,3 @@ public class MessageDAO {
 
     }
 }
-
-// Retrieve all messages written by a particular user (8??)
-/*
- * public List<Message> getParticularUserMessages(int account_id, String
- * message_text) {
- * Connection connection = ConnectionUtil.getConnection();
- * List<Message> messages = new ArrayList<>();
- * try {
- * String sql = "select * from message where posted_by = ?;";
- * PreparedStatement preparedStatement = connection.prepareStatement(sql);
- * 
- * preparedStatement.setInt(1, posted_by);
- * 
- * ResultSet rs = preparedStatement.executeQuery();
- * while (rs.next()) {
- * Message message = new Message(rs.getString("message_text"));
- * return message;
- * messages.add(message);
- * }
- * } catch (SQLException e) {
- * System.out.println(e.getMessage());
- * }
- * return messages;
- * }
- */
-
-// Do not forget to add curly

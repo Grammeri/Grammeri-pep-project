@@ -5,18 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import Model.Account;
 import Util.ConnectionUtil;
 
 public class AccountDAO {
+
+    // task 1 User Registration
     public Account createAccount(Account account) {
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "insert into account (username, password) values (?,?);";
-            // PreparedStatement preparedStatement = connection.prepareStatement(sql);
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setString(1, account.getUsername());
@@ -25,7 +23,7 @@ public class AccountDAO {
             preparedStatement.executeUpdate();
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
             if (pkeyResultSet.next()) {
-                int generated_account_id = (int) pkeyResultSet.getLong(1); //0 or 1???
+                int generated_account_id = (int) pkeyResultSet.getLong(1);
                 return new Account(generated_account_id, account.getUsername(), account.getPassword());
             }
         } catch (SQLException e) {
@@ -34,6 +32,7 @@ public class AccountDAO {
         return null;
     }
 
+    // Task 2 User login
     public Account getAccountByUsernameAndPassword(String username, String password) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -45,11 +44,12 @@ public class AccountDAO {
 
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-           Account account =  new Account (rs.getInt("account_id"),
-                    rs.getString("username"),
-                    rs.getString("password"));
-                    return account;
-                };
+                Account account = new Account(rs.getInt("account_id"),
+                        rs.getString("username"),
+                        rs.getString("password"));
+                return account;
+            }
+            ;
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -57,25 +57,4 @@ public class AccountDAO {
         return null;
     }
 
-    public List<Account> getAllAccounts() {
-        Connection connection = ConnectionUtil.getConnection();
-        List<Account> accounts = new ArrayList<>();
-        try {
-            String sql = "select * from account;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                Account account = new Account(rs.getInt("account_id"), rs.getString("username"),
-                        rs.getString("password"));
-                accounts.add(account);
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return accounts;
-    }
 }
-

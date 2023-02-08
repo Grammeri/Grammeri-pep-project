@@ -1,48 +1,45 @@
 package Service;
 
 import java.util.List;
-
-// import java.util.List;
-
 import DAO.MessageDAO;
 import Model.Message;
 
 public class MessageService {
     public MessageDAO messageDAO;
 
-    // No-args constructor
     public MessageService() {
         messageDAO = new MessageDAO();
     }
 
-    // @param messageDAO
     public MessageService(MessageDAO messageDAO) {
         this.messageDAO = messageDAO;
     }
 
-    // Create messages
+    // Task 3 New message creation
     public Message addMessage(Message message) {
-        // Account account_id = this.accountDAO.getAccountById(account.account_id);
+
         if (message.message_text.length() == 0 || message.message_text.length() > 255) {
             return null;
         }
         return messageDAO.createMessage(message);
     }
 
-    // @ return all messages
+    // Task 4 Getting all messages
     public List<Message> getAllMessages() {
         return messageDAO.getAllMessages();
     }
 
-    // retrieve message by id - version 1
+    // Task 5 Getting a message by its ID
     public Message getMessageById(int message_id) {
         return messageDAO.getMessageById(message_id);
     }
 
+    // Task 6 Deleting a message by its ID
     public Message deleteMessageById(int message_id) {
         return messageDAO.deleteMessageById(message_id);
     }
 
+    // Task 7 Updating a message by its ID
     public Message updateMessage(int message_id, Message message) {
         if (message.message_text.length() == 0 || message.message_text.length() > 255) {
             return null;
@@ -50,37 +47,9 @@ public class MessageService {
         messageDAO.updateMessage(message_id, message);
         return this.messageDAO.getMessageById(message_id);
     }
-    
+
+    // Task 8 Getting messages written by a particular user
     public List<Message> getAllMessagesByUser(int account_id) {
         return this.messageDAO.getAllMessagesByAccountId(account_id);
     }
 }
-// if(messageFromDb == null) return null;
-
-// //flightDAO.updateFlight(flight_id, flight);
-// return this.messageDAO.getMessageById(message_id);
-// }
-
-// retrieve message by id - version 2
-// public Message getMessageById(int message_id) {
-// return accountDAO.getAccountByUsernameAndPassword(username, password);
-// }
-
-// messageDAO.updateMessage(message_id, message);
-// return this.messageDAO.getMessageById(message_id);
-
-// }
-
-// }
-
-// Message messageFromDb = this.messageDAO.getMessageById(message_id);
-
-// if(messageFromDb == null) return null;
-
-// messageDAO.getMessageById(message_id, message);
-// return this.messageDAO.getMessageById(message_id);
-
-// if (message.message_text.length() == 0 || message.message_text.length() > 255
-// || message.message_id == 0) {
-// return null;
-// }
