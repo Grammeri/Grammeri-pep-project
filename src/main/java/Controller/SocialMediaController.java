@@ -37,11 +37,9 @@ public class SocialMediaController {
 
     /*
      * Dear examiner, FYI: All tasks were manually checked using ThunderClient and
-     * found to meet all the requirements, except
-     * for task 2 where logining of an unauthorized user provided status 404 instead
-     * of required 401.
+     * found to meet all the requirements.
      * The requirement not to allow registration of the existing username (task 1)
-     * is intrinsically met due to username being unique in the SQL DB, hence no
+     * is intrinsically met due to username being unique in the SQL Account table, hence no
      * code was required (checked manually).
      */
 

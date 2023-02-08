@@ -125,7 +125,8 @@ public class MessageDAO {
         return null;
     }
 
-    // Task 7 Updating a message by its ID
+    // Task 7 Updating a message by its ID.
+
     public void updateMessage(int message_id, Message message) {
         Connection connection = ConnectionUtil.getConnection();
 
