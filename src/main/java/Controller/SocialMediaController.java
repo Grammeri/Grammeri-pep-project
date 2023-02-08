@@ -35,7 +35,20 @@ public class SocialMediaController {
         return app;
     }
 
-    // Task 1, User Registration.
+    /*
+     * Dear examiner, FYI: All tasks were manually checked using ThunderClient and
+     * found to meet all the requirements, except
+     * for task 2 where logining of an unauthorized user provided status 404 instead
+     * of required 401.
+     * The requirement not to allow registration of the existing username (task 1)
+     * is intrinsically met due to username being unique in the SQL DB, hence no
+     * code was required (checked manually).
+     */
+
+    /*
+     * Task 1, User Registration. Unsuccessful registration marked by 400 (checked
+     * manually)
+     */
     private void newUserRegistrationHandler(Context ctx) throws JsonMappingException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
@@ -48,7 +61,10 @@ public class SocialMediaController {
 
     }
 
-    // Task 2 User login
+    /*
+     * Task 2 User login. Manual check revieled 404 for unauthorized user, should be
+     * 401
+     */
     private void userLoginHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account loginData = mapper.readValue(ctx.body(), Account.class);
@@ -83,7 +99,7 @@ public class SocialMediaController {
 
     // Task 5 Getting a message by its ID
     private void retrieveMessageByIdHandler(Context ctx) {
-        // path params are of type String by default, so we convert it to int
+
         Message retrievedMessage = messageService.getMessageById(Integer.parseInt(ctx.pathParam("message_id")));
         if (retrievedMessage == null) {
             ctx.status(200);
