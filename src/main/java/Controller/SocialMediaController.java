@@ -48,11 +48,11 @@ public class SocialMediaController {
      * manually)
      */
     private void newUserRegistrationHandler(Context ctx) throws JsonMappingException, JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper(); //Converting JSON string to a Java object
         Account account = mapper.readValue(ctx.body(), Account.class);
         Account addedAccount = accountService.addAccount(account);
         if (addedAccount != null) {
-            ctx.json(mapper.writeValueAsString(addedAccount));
+            ctx.json(mapper.writeValueAsString(addedAccount)); //Serializing a Java object into JSON 
         } else {
             ctx.status(400);
         }

@@ -87,40 +87,28 @@ public class MessageDAO {
     // Task 6 Deleting a message by its ID
     public Message deleteMessageById(int message_id) {
         Connection connection = ConnectionUtil.getConnection();
-        Message messageToDelete = null;
+        // Message messageToDelete = null;
 
-        try {
-            String sql = "select * from message where message_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        // while (rs.next()) {
+        // Message message = new Message(rs.getInt("message_id"),
+        // rs.getInt("posted_by"),
+        // rs.getString("message_text"),
+        // rs.getLong("time_posted_epoch"));
+        // messageToDelete = message;
+        // }
+        Message messageToDelete = this.getMessageById(message_id);
+        if (messageToDelete != null) {
+            try {
+                String deleteString = "delete from message where message_id = ?";
+                PreparedStatement preparedDeleteStatement = connection.prepareStatement(deleteString);
 
-            preparedStatement.setInt(1, message_id);
+                preparedDeleteStatement.setInt(1, message_id);
 
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                Message message = new Message(rs.getInt("message_id"),
-                        rs.getInt("posted_by"),
-                        rs.getString("message_text"),
-                        rs.getLong("time_posted_epoch"));
-                messageToDelete = message;
+                preparedDeleteStatement.executeUpdate();
+                return messageToDelete;
+            } catch (SQLException err) {
+                System.out.println(err.getMessage());
             }
-            if (messageToDelete != null) {
-                try {
-                    String deleteString = "delete from message where message_id = ?";
-                    PreparedStatement preparedDeleteStatement = connection.prepareStatement(deleteString);
-
-                    preparedDeleteStatement.setInt(1, message_id);
-
-                    preparedDeleteStatement.executeUpdate();
-                    return messageToDelete;
-                } catch (SQLException err) {
-                    System.out.println(err.getMessage());
-                }
-            }
-            return null;
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
         }
         return null;
     }
